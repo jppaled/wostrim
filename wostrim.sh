@@ -55,10 +55,10 @@ function getStream() {
         TITLE=$(echo $STREAM | jsonValue status)
         URL=$(echo $STREAM | getJsonValue url)
 
-        echo $GAME
-        echo $VIEWERS
-        echo $IS_LIVE
-        echo $TITLE
+        echo "game: "$GAME
+        echo "viewers: "$VIEWERS
+        #echo $IS_LIVE
+        echo "title:" $TITLE
         echo $URL
     else
         echo "No stream"
