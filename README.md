@@ -8,7 +8,7 @@ you need to enter a twitch **client-id** key in the `config.sh` file
 ```
 ./wostrim.sh zerator
 ```
-output
+# output
 ```
 game: Riders Republic
 viewers: 6930
