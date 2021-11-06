@@ -2,6 +2,10 @@
 
 source config.sh
 
+NOCOLOR='\033[0m'
+LIGHTPURPLE='\033[1;35m'
+MAGENTA='\e[1;45m'
+
 function jsonValue() {
     KEY=$1
     num=$2
@@ -45,7 +49,9 @@ function getStream() {
     TYPE=$(echo $STREAM | jsonValue stream_type)
     #IS_LIVE=$(echo $([[ "$TYPE" == "live" ]] && echo true || echo false))
 
-    echo "# "$CHANNEL" #"
+    NAME=$(echo $STREAM | jsonValue display_name)
+
+    echo -e "$MAGENTA# "$NAME" #$NOCOLOR"
 
     if [[ "$TYPE" == "live" ]]
     then 
