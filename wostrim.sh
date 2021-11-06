@@ -2,8 +2,6 @@
 
 source config.sh
 
-CHANNEL=$1
-
 function jsonValue() {
     KEY=$1
     num=$2
@@ -47,6 +45,8 @@ function getStream() {
     TYPE=$(echo $STREAM | jsonValue stream_type)
     #IS_LIVE=$(echo $([[ "$TYPE" == "live" ]] && echo true || echo false))
 
+    echo "# "$CHANNEL" #"
+
     if [[ "$TYPE" == "live" ]]
     then 
         GAME=$(echo $STREAM | jsonValue game 1)
@@ -63,7 +63,12 @@ function getStream() {
     else
         echo "No stream"
     fi
+
+    echo "----------------------------------------"
 }
 
-
-getUser $CHANNEL
+for streamer in "$@"
+do
+    CHANNEL=$streamer
+    getUser $streamer
+done
