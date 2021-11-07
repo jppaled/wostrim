@@ -52,33 +52,30 @@ function getStream() {
     TYPE=$(echo $STREAM | jsonValue stream_type)
     #IS_LIVE=$(echo $([[ "$TYPE" == "live" ]] && echo true || echo false))
 
-    echo -e "$CYAN $INDEX $MAGENTA" ${CHANNEL^} "$NOCOLOR"
-
     if [[ "$TYPE" == "live" ]]
     then 
         GAME=$(echo $STREAM | jsonValue game 1)
         VIEWERS=$(echo $STREAM | jsonValue viewers)
-        
         TITLE=$(echo $STREAM | jsonValue status)
         URL=$(echo $STREAM | getJsonValue url)
 
         echo "game: "$GAME
         echo "viewers: "$VIEWERS
-        #echo $IS_LIVE
         echo "title:" $TITLE
         echo $URL
     else
         echo "No stream"
     fi
-
-    echo "----------------------------------------"
 }
 
 for streamer in "$@"
 do
     INDEX=$(($INDEX + 1))
     CHANNEL=$streamer
+
+    echo -e "$CYAN $INDEX $MAGENTA" ${CHANNEL^} "$NOCOLOR"
     getUser $streamer
+    echo "----------------------------------------"
 done
 
 if which mpv > /dev/null;
