@@ -27,7 +27,7 @@ https://www.twitch.tv/laink
 if you have `mpv`, it will start the stream automatically: 
 ```
 Which stream do you want to see ?
-- enter  streamer name  or  number  to start the stream
+- enter streamer name or number to start the stream
 - q to exit
 
 $ laink
