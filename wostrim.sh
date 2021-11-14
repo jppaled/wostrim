@@ -54,6 +54,8 @@ function getStream() {
 
     if [[ "$TYPE" == "live" ]]
     then 
+        IS_ONE_STREAM_LIVE=true
+
         GAME=$(echo $STREAM | jsonValue game 1)
         VIEWERS=$(echo $STREAM | jsonValue viewers)
         TITLE=$(echo $STREAM | jsonValue status)
@@ -78,30 +80,33 @@ do
     echo "----------------------------------------"
 done
 
-if which mpv > /dev/null;
+if [ $IS_ONE_STREAM_LIVE ]
 then
-    echo "Which stream do you want to see ?"
-    echo -e "- enter $MAGENTA streamer name $NOCOLOR or $CYAN number $NOCOLOR to start the stream"
-    echo "- q to exit"
-
-    read
-
-    streamerArg=${REPLY}
-
-    if [[ $streamerArg == [0-9] ]]
+    if which mpv > /dev/null
     then
-        streamerArg=${!streamerArg}
-    elif [[ $streamerArg == "q" ]]
-    then
-        exit 0
-    fi
+        echo "Which stream do you want to see ?"
+        echo -e "- enter $MAGENTA streamer name $NOCOLOR or $CYAN number $NOCOLOR to start the stream"
+        echo "- q to exit"
 
-    if $(mpv --realy-quiet https://twitch.tv/$streamerArg | grep -q 'offline\|not exist');
-    then
-        echo "Not online or not exist"
+        read
+
+        streamerArg=${REPLY}
+
+        if [[ $streamerArg == [0-9] ]]
+        then
+            streamerArg=${!streamerArg}
+        elif [[ $streamerArg == "q" ]]
+        then
+            exit 0
+        fi
+
+        if $(mpv --realy-quiet https://twitch.tv/$streamerArg | grep -q 'offline\|not exist');
+        then
+            echo "Not online or not exist"
+        else
+            mpv https://twitch.tv/$streamerArg
+        fi
     else
-        mpv https://twitch.tv/$streamerArg
+        echo "CTRL + LEFT CLIC on twitch url to open the stream"
     fi
-else
-    echo "CTRL + LEFT CLIC on twitch url to open the stream"
 fi
