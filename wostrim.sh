@@ -92,7 +92,7 @@ then
 
         streamerArg=${REPLY}
 
-        if [[ $streamerArg == [0-9] ]]
+        if [[ $streamerArg =~ ^[0-9]+$ ]]
         then
             streamerArg=${!streamerArg}
         elif [[ $streamerArg == "q" ]]
