@@ -3,6 +3,7 @@
 readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source "${DIR}/config.sh"
+source "${DIR}/jsonTools.sh"
 
 NOCOLOR='\033[0m'
 LIGHTPURPLE='\033[1;35m'
@@ -19,15 +20,6 @@ if [[ $# > 0 ]]; then
     STREAMER_LIST=("$@")
 fi
 
-function jsonValue() {
-    KEY=$1
-    num=$2
-    awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d '"' | sed -n ${num}p
-}
-
-function getJsonValue() {
-    grep -o '"'$1'":"[^"]*' | cut -d'"' -f4
-}
 
 function getUser() {
     USER=$(curl \
@@ -75,7 +67,7 @@ function getStream() {
 
 # ******************************************************************************
 # main function
-for streamer in  "${STREAMER_LIST[@]}"
+for streamer in "${STREAMER_LIST[@]}"
 do
     INDEX=$(($INDEX + 1))
     CHANNEL=$streamer
