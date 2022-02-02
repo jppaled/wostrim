@@ -1,6 +1,8 @@
 #! /bin/bash
 
-source config.sh
+readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+source "${DIR}/config.sh"
 
 NOCOLOR='\033[0m'
 LIGHTPURPLE='\033[1;35m'
@@ -8,6 +10,14 @@ MAGENTA='\e[1;45m'
 CYAN='\e[1;46m'
 
 INDEX=0
+
+# default streamer list
+STREAMER_LIST=("${LIST[@]}")
+
+# if args take it as streamer list
+if [[ $# > 0 ]]; then
+    STREAMER_LIST=("$@")
+fi
 
 function jsonValue() {
     KEY=$1
@@ -49,28 +59,23 @@ function getStream() {
     --header "Accept: $ACCEPT_VERSION" \
     --header "Client-ID: $CLIENT_ID")
 
-    TYPE=$(echo $STREAM | jsonValue stream_type)
-    #IS_LIVE=$(echo $([[ "$TYPE" == "live" ]] && echo true || echo false))
-
-    if [[ "$TYPE" == "live" ]]
+    if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]
     then 
         IS_ONE_STREAM_LIVE=true
+        STREAM_COUNT=$((STREAM_COUNT + 1))
 
-        GAME=$(echo $STREAM | jsonValue game 1)
-        VIEWERS=$(echo $STREAM | jsonValue viewers)
-        TITLE=$(echo $STREAM | jsonValue status)
-        URL=$(echo $STREAM | getJsonValue url)
-
-        echo "game: "$GAME
-        echo "viewers: "$VIEWERS
-        echo "title:" $TITLE
-        echo $URL
+        echo "game: "$(echo $STREAM | jsonValue game 1)
+        echo "viewers: "$(echo $STREAM | jsonValue viewers)
+        echo "title:" $(echo $STREAM | jsonValue status)
+        echo $(echo $STREAM | getJsonValue url)
     else
         echo "No stream"
     fi
 }
 
-for streamer in "$@"
+# ******************************************************************************
+# main function
+for streamer in  "${STREAMER_LIST[@]}"
 do
     INDEX=$(($INDEX + 1))
     CHANNEL=$streamer
@@ -110,3 +115,4 @@ then
         echo "CTRL + LEFT CLIC on twitch url to open the stream"
     fi
 fi
+# ******************************************************************************
