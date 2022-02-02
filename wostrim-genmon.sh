@@ -4,6 +4,7 @@ readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source "${DIR}/config.sh"
 source "${DIR}/jsonTools.sh"
+readonly ICON="${DIR}/icon.png"
 
 MAGENTA="#ff79c6"
 STREAM_COUNT=0
@@ -63,7 +64,8 @@ XTOOL+="</tool>"
 
 # ******************************************************************************
 # Genmon panel XML
-XPAN="<txt>"
+XPAN="<img>${ICON}</img>"
+XPAN+="<txt>"
 XPAN+="${STREAM_COUNT}"
 XPAN+="</txt>"
 
