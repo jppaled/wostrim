@@ -66,7 +66,7 @@ XTOOL+="</tool>"
 # Genmon panel XML
 XPAN="<img>${ICON}</img>"
 XPAN+="<txt>"
-XPAN+="${STREAM_COUNT}"
+XPAN+=" ${STREAM_COUNT}"
 XPAN+="</txt>"
 
 # Echo the panel
