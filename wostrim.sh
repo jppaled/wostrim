@@ -68,10 +68,8 @@ do
     echo "----------------------------------------"
 done
 
-if [ $IS_ONE_STREAM_LIVE ]
-then
-    if which mpv > /dev/null
-    then
+if [ $IS_ONE_STREAM_LIVE ]; then
+    if which mpv > /dev/null; then
         echo "Which stream do you want to see ?"
         echo -e "- enter $MAGENTA streamer name $NOCOLOR or $CYAN number $NOCOLOR to start the stream"
         echo "- q to exit"
@@ -80,16 +78,13 @@ then
 
         streamerArg=${REPLY}
 
-        if [[ $streamerArg =~ ^[0-9]+$ ]]
-        then
+        if [[ $streamerArg =~ ^[0-9]+$ ]]; then
             streamerArg=${!streamerArg}
-        elif [[ $streamerArg == "q" ]]
-        then
+        elif [[ $streamerArg == "q" ]]; then
             exit 0
         fi
 
-        if $(mpv --realy-quiet https://twitch.tv/$streamerArg | grep -q 'offline\|not exist');
-        then
+        if $(mpv --realy-quiet https://twitch.tv/$streamerArg | grep -q 'offline\|not exist'); then
             echo "Not online or not exist"
         else
             mpv https://twitch.tv/$streamerArg
