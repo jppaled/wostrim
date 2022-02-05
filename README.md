@@ -55,6 +55,13 @@ if you don't have `mpv`:
 CTRL + LEFT CLIC on twitch url to open the stream
 ```
 
+## Database
+there is a `database.sh` file which contains the `id` and the `name` of the streamer.
+
+this file is filled after a call on the twitch api when the streamer is found.
+
+this avoids having to call the twitch api again to retrieve this information 
+
 ## Genmon
 I created a wostrim script for genmon that display number of online streamer
 
