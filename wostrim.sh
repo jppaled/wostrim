@@ -77,8 +77,9 @@ do
     STREAM=$(getTwitchStream $USER_ID)
     
     # if streamer is on live
-    if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then 
+    if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then
         NB_STREAM_LIVE=$(($NB_STREAM_LIVE + 1))
+        LAST_ONLINE_STREAMER=$streamer
 
         # display stream infos
         echo "game: "$(echo $STREAM | jsonValue game 1)
@@ -94,44 +95,49 @@ done
 
 # if there is at least 1 stream on live choose to start one of the streams
 if [ $NB_STREAM_LIVE -gt 0 ]; then
-    if which mpv > /dev/null; then
-        # if there is more than 1 stream on live
-        if [ $NB_STREAM_LIVE -gt 1 ]; then
-            echo "Which stream do you want to see ?"
-            echo -e "- enter $MAGENTA streamer name $NOCOLOR or $CYAN number $NOCOLOR to start the stream"
-            echo "- q to exit"
-            
-            read choice
-            
-             # if choice is a number
-            if [[ $choice =~ ^[0-9]+$ ]]; then
-                # i don't know how it works, it gives me the name of the streamer pliz help me
-                choice=${!choice}
-            elif [[ $choice == "q" ]]; then
-                # quit
-                exit 0
-            fi
-        else # so there is only one stream on live
-            echo -e "Do you want to see $MAGENTA ${streamer^} $NOCOLOR stream ?"
-            echo "- y to open the stream with mpv"
-            echo "- q or n to exit"
-            
-            read choice
+    # if there is more than 1 stream on live
+    if [ $NB_STREAM_LIVE -gt 1 ]; then
+        echo "Which stream do you want to see ?"
+        echo -e "- enter $MAGENTA streamer name $NOCOLOR or $CYAN number $NOCOLOR to start the stream"
+        #echo "- or you can CTRL + LEFT CLIC on twitch url to open the stream"
+        echo "- q to exit"
         
-            if [[ $choice == "y" ]]; then
-                choice=${streamer}
-            elif [[ $choice == "q" || $choice == "n" ]]; then
-                # quit
-                exit 0
-            else
-                echo "I didn't understand 🤷, you can only choose y, q or n"
-                exit 1
-            fi
+        read choice
+        
+         # if choice is a number
+        if [ "$choice" -eq "$choice" >& /dev/null ]; then
+            # get streamer by index
+            choice=${STREAMER_LIST[$(($choice - 1))]}
+        elif [[ $choice == "q" ]]; then
+            # quit
+            exit 0
+        else
+            echo "wtf"
+            echo $choice
         fi
+    else # so there is only one stream on live
+        echo -e "Do you want to see $MAGENTA ${LAST_ONLINE_STREAMER^} $NOCOLOR stream ?"
+        echo "- y to open the stream with mpv"
+        #echo "- or you can CTRL + LEFT CLIC on twitch url to open the stream"
+        echo "- q or n to exit"
         
+        read choice
+    
+        if [[ $choice == "y" ]]; then
+            choice=${LAST_ONLINE_STREAMER}
+        elif [[ $choice == "q" || $choice == "n" ]]; then
+            # quit
+            exit 0
+        else
+            echo "I didn't understand 🤷, you can only choose y, q or n"
+            exit 1
+        fi
+    fi
+    
+    if which mpv > /dev/null; then
         openInMpv $choice
-    else
-        echo "CTRL + LEFT CLIC on twitch url to open the stream"
+    else # open in the browser
+        xdg-open "https://twitch.tv/$choice"
     fi
 fi
 
