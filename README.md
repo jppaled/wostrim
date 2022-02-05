@@ -10,7 +10,7 @@ you can write channel's name of your fav streamers in the `streamer_list.sh` fil
 
 channel's name is the name after `https://twitch.tv/` in the url
 
-like https://twitch.tv/`zerator` -> `zerator` is the name of the channel
+like https://twitch.tv/zerator -> `zerator` is the name of the channel
 
 in the config.sh you write your fav channel's name like this:
 
@@ -69,6 +69,9 @@ you can put the channel's name as an argument, or put them in the `streamer_list
 add a generic monitor in your xfce pannel and add the path of the `wostrim-genmon.sh` script
 
 if you hover over the twitch icon, it displays the list of online streamers, and their infos
+
+## why I did this ?
+I didn't want to have a twitch account, but to be able to know which of my streamers on twitch was on live
 
 # todo
 - ~~argument to lunch stream with mpv~~
