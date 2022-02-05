@@ -16,10 +16,10 @@ source "${DIR}/apiTools.sh"
 source "${DIR}/database.sh"
 
 # colors
-NOCOLOR='\033[0m'
-LIGHTPURPLE='\033[1;35m'
-MAGENTA='\e[1;45m'
-CYAN='\e[1;46m'
+readonly NOCOLOR='\033[0m'
+readonly LIGHTPURPLE='\033[1;35m'
+readonly MAGENTA='\e[1;45m'
+readonly CYAN='\e[1;46m'
 
 INDEX=0
 
