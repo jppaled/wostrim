@@ -1,10 +1,18 @@
 #! /bin/bash
 
+# current dir
 readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "${DIR}/config.sh"
+# streamer list
+source "${DIR}/streamer_list.sh"
+
+# some tools to get values in json file
 source "${DIR}/jsonTools.sh"
 
+# tools to do calls on twitch api
+source "${DIR}/apiTools.sh"
+
+# colors
 NOCOLOR='\033[0m'
 LIGHTPURPLE='\033[1;35m'
 MAGENTA='\e[1;45m'
@@ -20,60 +28,43 @@ if [[ $# > 0 ]]; then
     STREAMER_LIST=("$@")
 fi
 
-
-function getUser() {
-    USER=$(curl \
-    -s \
-    --request GET  \
-    --url "https://api.twitch.tv/kraken/users/?login=$CHANNEL" \
-    --header "Accept: $ACCEPT_VERSION" \
-    --header "Client-ID: $CLIENT_ID")
-
-    USER_TOTAL=$(echo $USER | jsonValue _total )
-
-    if [[ "$USER_TOTAL" != 0 ]]
-    then 
-        getStream
-    else
-        echo "Streamer not found"
-    fi
-
-}
-
-function getStream() {
-    USER_ID=$(echo $USER | jsonValue _id)
-    USER_NAME=$(echo $USER | jsonValue display_name)
-
-    STREAM=$(curl \
-    -s \
-    --request GET  \
-    --url "https://api.twitch.tv/kraken/streams?limit=100&channel=$USER_ID" \
-    --header "Accept: $ACCEPT_VERSION" \
-    --header "Client-ID: $CLIENT_ID")
-
-    if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]
-    then 
-        IS_ONE_STREAM_LIVE=true
-        STREAM_COUNT=$((STREAM_COUNT + 1))
-
-        echo "game: "$(echo $STREAM | jsonValue game 1)
-        echo "viewers: "$(echo $STREAM | jsonValue viewers)
-        echo "title:" $(echo $STREAM | jsonValue status)
-        echo $(echo $STREAM | getJsonValue url)
-    else
-        echo "No stream"
-    fi
-}
-
-# ******************************************************************************
-# main function
+# loop on every streamer given in args or in config.sh
 for streamer in "${STREAMER_LIST[@]}"
 do
     INDEX=$(($INDEX + 1))
-    CHANNEL=$streamer
 
-    echo -e "$CYAN $INDEX $MAGENTA" ${CHANNEL^} "$NOCOLOR"
-    getUser $streamer
+    # displays the streamer being parsed
+    echo -e "$CYAN $INDEX $MAGENTA" ${streamer^} "$NOCOLOR"
+    
+    # get streamer infos from twitch api
+    USER=$(getTwitchUser $streamer)
+    
+    # count number of streamer found
+    USER_TOTAL=$(echo $USER | jsonValue _total )
+
+    # if streamer is found
+    if [[ "$USER_TOTAL" != 0 ]]; then
+        # get his user id
+        USER_ID=$(echo $USER | jsonValue _id)
+        
+        # get stream infos from twitch api with his user id
+        STREAM=$(getTwitchStream $USER_ID)
+        
+        # if streamer is on live
+        if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then 
+            IS_ONE_STREAM_LIVE=true
+
+            # display stream infos
+            echo "game: "$(echo $STREAM | jsonValue game 1)
+            echo "viewers: "$(echo $STREAM | jsonValue viewers)
+            echo "title:" $(echo $STREAM | jsonValue status)
+            echo $(echo $STREAM | getJsonValue url)
+        else
+            echo "No stream"
+        fi
+    else
+        echo "Streamer not found"
+    fi
     echo "----------------------------------------"
 done
 
@@ -105,6 +96,8 @@ then
         fi
     else
         echo "CTRL + LEFT CLIC on twitch url to open the stream"
+        exit 0
     fi
 fi
-# ******************************************************************************
+
+exit 0

@@ -4,10 +4,13 @@
 readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # streamer list
-source "${DIR}/config.sh"
+source "${DIR}/streamer_list.sh"
 
 # some tools to get values in json file
 source "${DIR}/jsonTools.sh"
+
+# tools to do calls on twitch api
+source "${DIR}/apiTools.sh"
 
 # database file
 source "${DIR}/data.sh"
@@ -44,13 +47,8 @@ do
     
     # if streamer infos does not exist in the database
     if [ -z "${!existing_id}" ]; then
-        # search streamer with name given in the twitch api
-        USER=$(curl \
-        -s \
-        --request GET  \
-        --url "https://api.twitch.tv/kraken/users/?login=$streamer" \
-        --header "Accept: $ACCEPT_VERSION" \
-        --header "Client-ID: $CLIENT_ID")
+        # get streamer infos from twitch api
+        USER=$(getTwitchUser $streamer)
         
         # if streamer found
         if [[ "$(echo $USER | jsonValue _total )" != 0 ]]; then 
@@ -71,13 +69,8 @@ do
     
     # now we got streamer infos to get his stream infos
  
-    # get stream infos in the twitch api
-    STREAM=$(curl \
-    -s \
-    --request GET  \
-    --url "https://api.twitch.tv/kraken/streams?limit=100&channel=$USER_ID" \
-    --header "Accept: $ACCEPT_VERSION" \
-    --header "Client-ID: $CLIENT_ID")
+    # get stream infos from twitch api with his user id
+    STREAM=$(getTwitchStream $USER_ID)
 
     # if stream is online
     if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then 

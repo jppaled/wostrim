@@ -6,7 +6,7 @@ you need to enter a twitch **client-id** key in the `config.sh` file
 
 ## your fav streamers
 
-you can write channel's name of your fav streamers in the `config.sh` file
+you can write channel's name of your fav streamers in the `streamer_list.sh` file
 
 channel's name is the name after `https://twitch.tv/` in the url
 
@@ -21,7 +21,7 @@ in the config.sh you write your fav channel's name like this:
 ```
 ./wostrim.sh zerator laink
 ```
-or if you register some channel's name in the `config.sh` file
+or if you register some channel's name in the `streamer_list.sh` file
 ```
 ./wostrim.sh
 ```
@@ -60,7 +60,7 @@ I created a wostrim script for genmon that display number of online streamer
 
 it works the same way as the `wostrim.sh` script
 
-you can put the channel's name as an argument, or put them in the config.sh file
+you can put the channel's name as an argument, or put them in the `streamer_list.sh` file
 
 ```
 ./wostrim-genmon.sh
