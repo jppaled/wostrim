@@ -1,14 +1,32 @@
 # wostrim
-bash script to see if your twitch streamer is online and get some infos like game name, stream url...
+bash script to see if your twitch streamer is online and get some infos like game name, number of viewers, stream url...
 
-# config
+## config
 you need to enter a twitch **client-id** key in the `config.sh` file
 
-# run
+## your fav streamers
+
+you can write channel's name of your fav streamers in the `config.sh` file
+
+channel's name is the name after `https://twitch.tv/` in the url
+
+like https://twitch.tv/`zerator` -> `zerator` is the name of the channel
+
+in the config.sh you write your fav channel's name like this:
+
+`LIST=(zerator laink ...)`
+
+
+## run
 ```
 ./wostrim.sh zerator laink
 ```
-# output
+or if you register some channel's name in the `config.sh` file
+```
+./wostrim.sh
+```
+
+## output
 ```
 1 Zerator
 game: Riders Republic
@@ -36,6 +54,21 @@ if you don't have `mpv`:
 ```
 CTRL + LEFT CLIC on twitch url to open the stream
 ```
+
+## Genmon
+I created a wostrim script for genmon that display number of online streamer
+
+it works the same way as the `wostrim.sh` script
+
+you can put the channel's name as an argument, or put them in the config.sh file
+
+```
+./wostrim-genmon.sh
+```
+
+add a generic monitor in your xfce pannel and add the path of the `wostrim-genmon.sh` script
+
+if you hover over the twitch icon, it displays the list of online streamers, and their infos
 
 # todo
 - ~~argument to lunch stream with mpv~~
