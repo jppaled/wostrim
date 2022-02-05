@@ -27,20 +27,8 @@ or if you register some channel's name in the `streamer_list.sh` file
 ```
 
 ## Output
-```
-1 Zerator
-game: Riders Republic
-viewers: 6930
-title: LE RETOUR DE RIDERS REPUBLIC
-https://www.twitch.tv/zerator
-----------------------------------------
-2 Laink
-game: Rocket League
-viewers: 6121
-title: Laink - ULTRA FOCUS
-https://www.twitch.tv/laink
-----------------------------------------
-```
+![wostrim-exemple](https://user-images.githubusercontent.com/22444128/152661561-29439b06-7bfa-4377-b561-cda2f8a7905f.png)
+
 
 if you have `mpv`, it will start the stream automatically: 
 ```
