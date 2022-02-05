@@ -35,15 +35,12 @@ if [[ $# > 0 ]]; then
     STREAMER_LIST=("$@")
 fi
 
-# loop on every streamer given in args of in config.sh
+# loop on every streamer given in args or in streamer_list.sh
 for streamer in "${STREAMER_LIST[@]}"
 do
     # get streamer info in database file
     existing_id="data_$streamer[0]"
     existing_name="data_$streamer[1]"
- 
-    USER_ID="${!existing_id}"
-    USER_NAME="${!existing_name}"
     
     # if streamer infos does not exist in the database
     if [ -z "${!existing_id}" ]; then
@@ -60,11 +57,14 @@ do
             # this avoids redoing a call to the twitch api to get streamer infos
             array_name=data_${streamer}
             eval "$array_name=($USER_ID $USER_NAME)"
-            declare -p $array_name >> data.sh
+            declare -p $array_name >> database.sh
         else
             # streamer not found in twitch api
             continue
         fi
+    else
+        USER_ID="${!existing_id}"
+        USER_NAME="${!existing_name}"
     fi
     
     # now we got streamer infos to get his stream infos

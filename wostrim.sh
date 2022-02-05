@@ -31,7 +31,7 @@ if [[ $# > 0 ]]; then
     STREAMER_LIST=("$@")
 fi
 
-# loop on every streamer given in args or in config.sh
+# loop on every streamer given in args or in streamer_list.sh
 for streamer in "${STREAMER_LIST[@]}"
 do
     INDEX=$(($INDEX + 1))
@@ -39,35 +39,52 @@ do
     # displays the streamer being parsed
     echo -e "$CYAN $INDEX $MAGENTA" ${streamer^} "$NOCOLOR"
     
-    # get streamer infos from twitch api
-    USER=$(getTwitchUser $streamer)
+    # get streamer info in database file
+    existing_id="data_$streamer[0]"
+    existing_name="data_$streamer[1]"
     
-    # count number of streamer found
-    USER_TOTAL=$(echo $USER | jsonValue _total )
+    # if streamer infos does not exist in the database
+    if [ -z "${!existing_id}" ]; then
+        # get streamer infos from twitch api
+        USER=$(getTwitchUser $streamer)
 
-    # if streamer is found
-    if [[ "$USER_TOTAL" != 0 ]]; then
-        # get his user id
-        USER_ID=$(echo $USER | jsonValue _id)
-        
-        # get stream infos from twitch api with his user id
-        STREAM=$(getTwitchStream $USER_ID)
-        
-        # if streamer is on live
-        if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then 
-            IS_ONE_STREAM_LIVE=true
-
-            # display stream infos
-            echo "game: "$(echo $STREAM | jsonValue game 1)
-            echo "viewers: "$(echo $STREAM | jsonValue viewers)
-            echo "title:" $(echo $STREAM | jsonValue status)
-            echo $(echo $STREAM | getJsonValue url)
+        # if streamer is found
+        if [[ "$(echo $USER | jsonValue _total )" != 0 ]]; then
+            # get his user id
+            USER_ID=$(echo $USER | jsonValue _id)
+            USER_NAME=$(echo $USER | jsonValue display_name)
+            
+            # save streamer infos in the database for next execution of script
+            # this avoids redoing a call to the twitch api to get streamer infos
+            array_name=data_${streamer}
+            eval "$array_name=($USER_ID $USER_NAME)"
+            declare -p $array_name >> database.sh
         else
-            echo "No stream"
+            # streamer not found in twitch api
+            echo "Streamer not found"
+            continue
         fi
     else
-        echo "Streamer not found"
+        USER_ID="${!existing_id}"
+        USER_NAME="${!existing_name}"
     fi
+    
+    # get stream infos from twitch api with his user id
+    STREAM=$(getTwitchStream $USER_ID)
+    
+    # if streamer is on live
+    if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then 
+        IS_ONE_STREAM_LIVE=true
+
+        # display stream infos
+        echo "game: "$(echo $STREAM | jsonValue game 1)
+        echo "viewers: "$(echo $STREAM | jsonValue viewers)
+        echo "title:" $(echo $STREAM | jsonValue status)
+        echo $(echo $STREAM | getJsonValue url)
+    else
+        echo "No stream"
+    fi
+ 
     echo "----------------------------------------"
 done
 
