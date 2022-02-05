@@ -12,6 +12,9 @@ source "${DIR}/jsonTools.sh"
 # tools to do calls on twitch api
 source "${DIR}/apiTools.sh"
 
+# database file containing the names and id of streams previously retrieved
+source "${DIR}/database.sh"
+
 # colors
 NOCOLOR='\033[0m'
 LIGHTPURPLE='\033[1;35m'

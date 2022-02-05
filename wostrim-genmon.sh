@@ -12,8 +12,8 @@ source "${DIR}/jsonTools.sh"
 # tools to do calls on twitch api
 source "${DIR}/apiTools.sh"
 
-# database file
-source "${DIR}/data.sh"
+# database file containing the names and id of streams previously retrieved
+source "${DIR}/database.sh"
 
 # twitch icon
 readonly ICON="${DIR}/icon.png"
