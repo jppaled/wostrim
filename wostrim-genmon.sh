@@ -42,9 +42,6 @@ do
     USER_ID="${!existing_id}"
     USER_NAME="${!existing_name}"
     
-#    echo "${!existing_id}"
-#    echo "${!existing_name}"
-    
     # if streamer infos does not exist in the database
     if [ -z "${!existing_id}" ]; then
         # search streamer with name given in the twitch api
