@@ -3,9 +3,8 @@
 # twitch client id key
 source "${DIR}/config.sh"
 
-random_index=$[$RANDOM % ${#CLIENT_IDS[@]}]
-
-CLIENT_ID=${CLIENT_IDS[random_index]}
+# randomize client-id used to avoid using the same id
+CLIENT_ID=${CLIENT_IDS[$[$RANDOM % ${#CLIENT_IDS[@]}]]}
 
 function getTwitchUser() {
     local USER=$(curl \

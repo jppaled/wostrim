@@ -136,7 +136,6 @@ if [ $NB_STREAM_LIVE -gt 0 ]; then
     fi
     
     open $choice
-    exit 0
 fi
 
 exit 0
