@@ -82,5 +82,4 @@ It will display a notification with notify-send like this
 I didn't want to have a twitch account, but to be able to know which of my streamers on twitch was on live
 
 # Todo
-- create desktop notification
 - make it works with twitch api token
