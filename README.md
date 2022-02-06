@@ -21,7 +21,7 @@ channel's name is the name after `https://twitch.tv/` in the url
 
 like https://twitch.tv/zerator -> `zerator` is the name of the channel
 
-in the steamer_list.sh you write your fav channel's name like this:
+in the `streamer_list.sh` you write your fav channel's name like this:
 
 `LIST=(zerator laink ...)`
 
@@ -37,6 +37,11 @@ there is a `database.sh` file which contains the `id` and the `name` of the stre
 this file is filled after a call on the twitch api when the streamer is found.
 
 this avoids having to call the twitch api again to retrieve this information 
+
+```
+declare -a data_zerator=([0]="41719107" [1]="ZeratoR")
+declare -a data_laink=([0]="89872865" [1]="Laink")
+```
 
 ## Genmon
 I created a wostrim script for genmon that display number of online streamer
