@@ -50,11 +50,16 @@ it works the same way as the `wostrim.sh` script
 
 you can put the channel's name as an argument, or put them in the `streamer_list.sh` file
 
-```
-./wostrim-genmon.sh
-```
-
-add a generic monitor in your xfce pannel and add the path of the `wostrim-genmon.sh` script
+- First you have to install `xfce4-genmon-plugin` package if it is not on your system
+- Add the monitor to the panel
+    - Right click on the panel
+    - Select _Panel -> Add new items_
+    - Add _Generic Monitor_ plugin
+- Set up the generic monitor to use with wostrim
+    - Right click on the newly added generic monitor -> _Properties_
+    - Command: `/path/to/wostrim-genmon.sh`
+    - Uncheck the checkbox of _Label_
+    - Set _Period_ to `300` seconds (5 minutes)
 
 the icon will appear with the number of online streamer ![genmon](https://user-images.githubusercontent.com/22444128/152661294-9bb29c09-9c40-44d9-9be9-734dfd44f864.png)
 
