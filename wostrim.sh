@@ -95,8 +95,26 @@ done
 
 # if there is at least 1 stream on live choose to start one of the streams
 if [ $NB_STREAM_LIVE -gt 0 ]; then
-    # if there is more than 1 stream on live
-    if [ $NB_STREAM_LIVE -gt 1 ]; then
+
+    # if there is only one stream on live
+    if [ $NB_STREAM_LIVE -eq 0 ]; then
+        echo -e "Do you want to see $MAGENTA ${LAST_ONLINE_STREAMER^} $NOCOLOR stream ?"
+        echo "- y to open the stream with mpv"
+        #echo "- or you can CTRL + LEFT CLIC on twitch url to open the stream"
+        echo "- q or n to exit"
+        
+        read choice
+    
+        if [[ $choice == "y" ]]; then
+            choice=${LAST_ONLINE_STREAMER}
+        elif [[ $choice == "q" || $choice == "n" ]]; then
+            # quit
+            exit 0
+        else
+            echo "I didn't understand 🤷, you can only choose y, q or n"
+            exit 1
+        fi
+    else # if there is more than 1 stream on live
         echo "Which stream do you want to see ?"
         echo -e "- enter $MAGENTA streamer name $NOCOLOR or $CYAN number $NOCOLOR to start the stream"
         #echo "- or you can CTRL + LEFT CLIC on twitch url to open the stream"
@@ -112,24 +130,7 @@ if [ $NB_STREAM_LIVE -gt 0 ]; then
             # quit
             exit 0
         else
-            echo "wtf"
-            echo $choice
-        fi
-    else # so there is only one stream on live
-        echo -e "Do you want to see $MAGENTA ${LAST_ONLINE_STREAMER^} $NOCOLOR stream ?"
-        echo "- y to open the stream with mpv"
-        #echo "- or you can CTRL + LEFT CLIC on twitch url to open the stream"
-        echo "- q or n to exit"
-        
-        read choice
-    
-        if [[ $choice == "y" ]]; then
-            choice=${LAST_ONLINE_STREAMER}
-        elif [[ $choice == "q" || $choice == "n" ]]; then
-            # quit
-            exit 0
-        else
-            echo "I didn't understand 🤷, you can only choose y, q or n"
+            echo "error with this choice "$choice" 🤷"
             exit 1
         fi
     fi
