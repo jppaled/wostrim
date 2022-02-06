@@ -1,22 +1,6 @@
 # Wostrim
 bash script to see if your twitch streamer is online and get some infos like game name, number of viewers, stream url...
 
-## Config
-you need to enter a twitch **client-id** key in the `config.sh` file
-
-## Your fav streamers
-
-you can write channel's name of your fav streamers in the `streamer_list.sh` file
-
-channel's name is the name after `https://twitch.tv/` in the url
-
-like https://twitch.tv/zerator -> `zerator` is the name of the channel
-
-in the config.sh you write your fav channel's name like this:
-
-`LIST=(zerator laink ...)`
-
-
 ## Run
 ```
 ./wostrim.sh zerator laink
@@ -29,6 +13,17 @@ or if you register some channel's name in the `streamer_list.sh` file
 ## Output
 ![wostrim-exemple](https://user-images.githubusercontent.com/22444128/152661561-29439b06-7bfa-4377-b561-cda2f8a7905f.png)
 
+## Your fav streamers
+
+you can write channel's name of your fav streamers in the `streamer_list.sh` file
+
+channel's name is the name after `https://twitch.tv/` in the url
+
+like https://twitch.tv/zerator -> `zerator` is the name of the channel
+
+in the steamer_list.sh you write your fav channel's name like this:
+
+`LIST=(zerator laink ...)`
 
 ## If you have `mpv` 
 it will automatically start the stream with it
