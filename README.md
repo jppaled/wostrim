@@ -63,8 +63,5 @@ if you hover over the twitch icon, it displays the list of online streamers, and
 I didn't want to have a twitch account, but to be able to know which of my streamers on twitch was on live
 
 # Todo
-- ~~argument to lunch stream with mpv~~
 - create desktop notification
-- ~~multiple streamer name in argument~~
-- explain how to get a client-id key
 - make it works with twitch api token
