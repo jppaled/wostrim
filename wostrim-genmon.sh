@@ -12,8 +12,14 @@ source "${DIR}/jsonTools.sh"
 # tools to do calls on twitch api
 source "${DIR}/apiTools.sh"
 
+# notification tool
+source "${DIR}/notification.sh"
+
 # database file containing the names and id of streams previously retrieved
 source "${DIR}/database.sh"
+
+# list of actual online stream
+source "${DIR}/online.sh"
 
 # twitch icon
 readonly ICON="${DIR}/icon.png"
@@ -72,10 +78,29 @@ do
     # get stream infos from twitch api with his user id
     STREAM=$(getTwitchStream $USER_ID)
 
+    # search if this stream was already notified
+    in=1 # false
+    for element in "${online_streamers[@]}"; do
+        if [[ $element == "$streamer" ]]; then
+            # stream already notified
+            in=0 # true
+            break
+        fi
+    done
+        
     # if stream is online
     if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then 
         # increments the number of online streamers
         STREAM_COUNT=$((STREAM_COUNT + 1))
+        
+        # stream was not notified
+        if [ $in -eq 1 ];then
+            # update online streamer list
+            online_streamers+=($streamer)
+            
+            # send notification
+            show_nofitication $streamer "$(echo $STREAM | jsonValue game 1)"
+        fi
         
         # Genmon tooltip XML stream infos
         XTOOL+="<span fgcolor='${MAGENTA}'>${USER_NAME^}</span>\n"
@@ -83,8 +108,26 @@ do
         XTOOL+="<span>viewers: $(echo $STREAM | jsonValue viewers)</span>\n"
         XTOOL+="<span>title: $(echo $STREAM | jsonValue status)</span>\n"
         XTOOL+="<span>----------------------------------------</span>\n"
+    else   
+        # streamer is no longer online 
+        if [ $in -eq 0 ];then
+            delete+=($streamer)
+        fi
     fi
 done
+
+# remove stream that are no longer online in the online list
+for target in "${delete[@]}"; do
+    for i in "${!online_streamers[@]}"; do
+        # remove
+        if [[ ${online_streamers[i]} = "$target" ]]; then
+            unset online_streamers[$i]
+        fi
+    done
+done
+
+# update actual online streamer list
+declare -p online_streamers > online.sh
 
 # Genmon tooltip XML end
 XTOOL+="</tool>"
