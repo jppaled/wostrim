@@ -30,18 +30,11 @@ or if you register some channel's name in the `streamer_list.sh` file
 ![wostrim-exemple](https://user-images.githubusercontent.com/22444128/152661561-29439b06-7bfa-4377-b561-cda2f8a7905f.png)
 
 
-if you have `mpv`, it will start the stream automatically: 
-```
-Which stream do you want to see ?
-- enter streamer name or number to start the stream
-- q to exit
+## if you have `mpv` 
+it will automatically start the stream with it
 
-$ laink
-```
-if you don't have `mpv`:
-```
-CTRL + LEFT CLIC on twitch url to open the stream
-```
+## if you don't have `mpv`:
+It will start the stream in your browser
 
 ## Database
 there is a `database.sh` file which contains the `id` and the `name` of the streamer.
