@@ -6,7 +6,7 @@ function openInMpv() {
     if $(mpv --msg-level=error=trace https://twitch.tv/$1 | grep -q 'offline\|not exist'); then
         echo "$1 is not online or does not exist"
     else
-        mpv https://twitch.tv/$1
+        mpv --no-terminal https://twitch.tv/$1 &
     fi
 }
 
