@@ -97,7 +97,7 @@ done
 if [ $NB_STREAM_LIVE -gt 0 ]; then
 
     # if there is only one stream on live
-    if [ $NB_STREAM_LIVE -eq 0 ]; then
+    if [ $NB_STREAM_LIVE -eq 1 ]; then
         echo -e "Do you want to see $MAGENTA ${LAST_ONLINE_STREAMER^} $NOCOLOR stream ?"
         echo "- y to open the stream with mpv"
         #echo "- or you can CTRL + LEFT CLIC on twitch url to open the stream"
