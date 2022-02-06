@@ -30,10 +30,10 @@ or if you register some channel's name in the `streamer_list.sh` file
 ![wostrim-exemple](https://user-images.githubusercontent.com/22444128/152661561-29439b06-7bfa-4377-b561-cda2f8a7905f.png)
 
 
-## if you have `mpv` 
+## If you have `mpv` 
 it will automatically start the stream with it
 
-## if you don't have `mpv`:
+## If you don't have `mpv`:
 It will start the stream in your browser
 
 ## Database
