@@ -68,6 +68,15 @@ if you hover over the twitch icon, it displays the list of online streamers, and
 
 ![panel](https://user-images.githubusercontent.com/22444128/152661226-51ab2a53-c616-4fdb-9923-bdf2af325d1d.png)
 
+### Notification
+When a stream goes live, it will show a desktop nofication
+
+#### If you have zenity
+It will display a notification with a button
+If you click on the button, it will open the stream on mpv if it's installed, or it will open in your browser
+
+#### If you don't have zenity
+It will display a notification with notify-send like this
 
 ## Why I did this ?
 I didn't want to have a twitch account, but to be able to know which of my streamers on twitch was on live

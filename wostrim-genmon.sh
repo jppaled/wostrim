@@ -99,7 +99,7 @@ do
             online_streamers+=($streamer)
             
             # send notification
-            show_nofitication $streamer "$(echo $STREAM | jsonValue game 1)"
+            show_nofitication $streamer "$(echo $STREAM | jsonValue game 1)" &
         fi
         
         # Genmon tooltip XML stream infos
@@ -143,3 +143,5 @@ echo "${XPAN}"
 
 # Echo the tooltip
 echo -e "${XTOOL}"
+
+exit 0

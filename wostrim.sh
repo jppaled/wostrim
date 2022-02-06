@@ -12,8 +12,8 @@ source "${DIR}/jsonTools.sh"
 # tools to do calls on twitch api
 source "${DIR}/apiTools.sh"
 
-# open stream with mpv
-source "${DIR}/mpv.sh"
+# function to open stream via multiple way
+source "${DIR}/open.sh"
 
 # database file containing the names and id of streams previously retrieved
 source "${DIR}/database.sh"
@@ -135,11 +135,8 @@ if [ $NB_STREAM_LIVE -gt 0 ]; then
         fi
     fi
     
-    if which mpv > /dev/null; then
-        openInMpv $choice
-    else # open in the browser
-        xdg-open "https://twitch.tv/$choice"
-    fi
+    open $choice
+    exit 0
 fi
 
 exit 0
