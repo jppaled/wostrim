@@ -26,13 +26,28 @@ readonly CYAN='\e[1;46m'
 
 INDEX=0
 NB_STREAM_LIVE=0
+AUTO_OPEN_STREAM=false
+
+# get all options
+while getopts ":h" arg; do
+    case ${arg} in
+        y)
+            AUTO_OPEN_STREAM=true
+            ;;
+
+        ?)
+            echo "Invalid option: -${OPTARG}."
+            exit 2
+            ;;
+    esac
+done
 
 # default streamer list
 STREAMER_LIST=("${LIST[@]}")
 
 # if args take it as streamer list
 if [[ $# > 0 ]]; then
-    STREAMER_LIST=("$@")
+    STREAMER_LIST=(${@##-*})
 fi
 
 # loop on every streamer given in args or in streamer_list.sh
@@ -98,21 +113,27 @@ if [ $NB_STREAM_LIVE -gt 0 ]; then
 
     # if there is only one stream on live
     if [ $NB_STREAM_LIVE -eq 1 ]; then
-        echo -e "Do you want to see $MAGENTA ${LAST_ONLINE_STREAMER^} $NOCOLOR stream ?"
-        echo "- y to open the stream with mpv"
-        #echo "- or you can CTRL + LEFT CLIC on twitch url to open the stream"
-        echo "- q or n to exit"
         
-        read choice
-    
-        if [[ $choice == "y" ]]; then
+        # if -y option is passed, start the stream automaticly
+        if [ $AUTO_OPEN_STREAM ]; then
             choice=${LAST_ONLINE_STREAMER}
-        elif [[ $choice == "q" || $choice == "n" ]]; then
-            # quit
-            exit 0
         else
-            echo "I didn't understand 🤷, you can only choose y, q or n"
-            exit 1
+            echo -e "Do you want to see $MAGENTA ${LAST_ONLINE_STREAMER^} $NOCOLOR stream ?"
+            echo "- y to open the stream with mpv"
+            #echo "- or you can CTRL + LEFT CLIC on twitch url to open the stream"
+            echo "- q or n to exit"
+            
+            read choice
+        
+            if [[ $choice == "y" ]]; then
+                choice=${LAST_ONLINE_STREAMER}
+            elif [[ $choice == "q" || $choice == "n" ]]; then
+                # quit
+                exit 0
+            else
+                echo "I didn't understand 🤷, you can only choose y, q or n"
+                exit 1
+            fi
         fi
     else # if there is more than 1 stream on live
         echo "Which stream do you want to see ?"
