@@ -62,7 +62,7 @@ do
             # this avoids redoing a call to the twitch api to get streamer infos
             array_name=data_${streamer}
             eval "$array_name=($USER_ID $USER_NAME)"
-            declare -p $array_name >> database.sh
+            declare -p $array_name >> "${DIR}/database.sh"
         else
             # streamer not found in twitch api
             echo "Streamer not found"

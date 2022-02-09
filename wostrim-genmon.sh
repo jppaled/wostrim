@@ -63,7 +63,7 @@ do
             # this avoids redoing a call to the twitch api to get streamer infos
             array_name=data_${streamer}
             eval "$array_name=($USER_ID $USER_NAME)"
-            declare -p $array_name >> database.sh
+            declare -p $array_name >> "${DIR}/database.sh"
         else
             # streamer not found in twitch api
             continue
@@ -127,7 +127,7 @@ for target in "${delete[@]}"; do
 done
 
 # update actual online streamer list
-declare -p online_streamers > online.sh
+declare -p online_streamers > "${DIR}/online.sh"
 
 # Genmon tooltip XML end
 XTOOL+="</tool>"
