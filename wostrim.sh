@@ -26,15 +26,12 @@ readonly CYAN='\e[1;46m'
 
 INDEX=0
 NB_STREAM_LIVE=0
-AUTO_OPEN_STREAM=false
 
 # get all options
-while getopts ":h" arg; do
+while getopts y arg; do
+   
     case ${arg} in
-        y)
-            AUTO_OPEN_STREAM=true
-            ;;
-
+        y) AUTO_OPEN_STREAM=true;;
         ?)
             echo "Invalid option: -${OPTARG}."
             exit 2
