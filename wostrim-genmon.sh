@@ -54,9 +54,9 @@ do
         USER=$(getTwitchUser $streamer)
         
         # if streamer found
-        if [[ "$(echo $USER | jsonValue _total )" != 0 ]]; then 
+        if [[ "$(echo $USER | jsonValue id )" != 0 ]]; then 
             # store id and name
-            USER_ID=$(echo $USER | jsonValue _id)
+            USER_ID=$(echo $USER | jsonValue id)
             USER_NAME=$(echo $USER | jsonValue display_name)
             
             # save streamer infos in the database for next execution of script
@@ -89,7 +89,7 @@ do
     done
         
     # if stream is online
-    if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then 
+    if [[ "$(echo $STREAM | jsonValue type)" == "live" ]]; then 
         # increments the number of online streamers
         STREAM_COUNT=$((STREAM_COUNT + 1))
         
@@ -104,9 +104,9 @@ do
         
         # Genmon tooltip XML stream infos
         XTOOL+="<span fgcolor='${MAGENTA}'>${USER_NAME^}</span>\n"
-        XTOOL+="<span>game: $(echo $STREAM | jsonValue game 1)</span>\n"
-        XTOOL+="<span>viewers: $(echo $STREAM | jsonValue viewers)</span>\n"
-        XTOOL+="<span>title: $(echo $STREAM | jsonValue status)</span>\n"
+        XTOOL+="<span>game: $(echo $STREAM | jsonValue game_name 1)</span>\n"
+        XTOOL+="<span>viewers: $(echo $STREAM | jsonValue viewer_count)</span>\n"
+        XTOOL+="<span>title: $(echo $STREAM | getJsonValue title)</span>\n"
         XTOOL+="<span>----------------------------------------</span>\n"
     else   
         # streamer is no longer online 

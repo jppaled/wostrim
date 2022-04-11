@@ -65,11 +65,10 @@ do
         USER=$(getTwitchUser $streamer)
 
         # if streamer is found
-        if [[ "$(echo $USER | jsonValue _total )" != 0 ]]; then
+        if [[ "$(echo $USER | jsonValue id )" != 0 ]]; then
             # get his user id
-            USER_ID=$(echo $USER | jsonValue _id)
+            USER_ID=$(echo $USER | jsonValue id)
             USER_NAME=$(echo $USER | jsonValue display_name)
-            
             # save streamer infos in the database for next execution of script
             # this avoids redoing a call to the twitch api to get streamer infos
             array_name=data_${streamer}
@@ -89,15 +88,15 @@ do
     STREAM=$(getTwitchStream $USER_ID)
     
     # if streamer is on live
-    if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then
+    if [[ "$(echo $STREAM | jsonValue type)" == "live" ]]; then
         NB_STREAM_LIVE=$(($NB_STREAM_LIVE + 1))
         LAST_ONLINE_STREAMER=$streamer
 
         # display stream infos
-        echo "game: "$(echo $STREAM | jsonValue game 1)
-        echo "viewers: "$(echo $STREAM | jsonValue viewers)
-        echo "title:" $(echo $STREAM | jsonValue status)
-        echo $(echo $STREAM | getJsonValue url)
+        echo "game: "$(echo $STREAM | jsonValue game_name 1)
+        echo "viewers: "$(echo $STREAM | jsonValue viewer_count)
+        echo "title:" $(echo $STREAM | getJsonValue title)
+        echo "https://twitch.tv/"$(echo $STREAM | getJsonValue user_login)
     else
         echo "No stream"
     fi
