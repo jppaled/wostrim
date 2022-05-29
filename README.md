@@ -1,6 +1,9 @@
 # Wostrim
 bash script to see if your twitch streamer is online and get some infos like game name, number of viewers, stream url...
 
+## Dependancies
+You need to install `jq` for json parsing
+
 ## Run
 ```
 ./wostrim.sh zerator laink
