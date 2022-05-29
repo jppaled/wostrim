@@ -83,6 +83,3 @@ It will display a notification with notify-send like this
 
 ## Why I did this ?
 I didn't want to have a twitch account, but to be able to know which of my streamers on twitch was on live
-
-# Todo
-- make it works with twitch api token
