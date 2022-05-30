@@ -30,9 +30,6 @@ STREAM_COUNT=0
 # Genmon tooltip XML start
 XTOOL="<tool>"
 
-# HTML div start
-HTML="<div>"
-
 # default streamer list from config.sh
 STREAMER_LIST=("${LIST[@]}")
 
@@ -101,27 +98,13 @@ do
             # send notification
             show_nofitication $streamer "$(echo $STREAM | jq -r '.data[].game')" &
         fi
-        
-        # stream infos
-        username=${USER_NAME^} 
-        gameName=$(echo $STREAM | jq -r '.data[].game_name')
-        viewerCount=$(echo $STREAM | jq -r '.data[].viewer_count')
-        title=$(echo $STREAM | jq -r '.data[].title')
 
         # Genmon tooltip XML stream infos
-        XTOOL+="<span fgcolor='${MAGENTA}'>$username</span>\n"
-        XTOOL+="<span>game: $gameName</span>\n"
-        XTOOL+="<span>viewers: $viewerCount</span>\n"
-        XTOOL+="<span>title: $title</span>\n"
+        XTOOL+="<span fgcolor='${MAGENTA}'>${USER_NAME^} </span>\n"
+        XTOOL+="<span>game: $(echo $STREAM | jq -r '.data[].game_name')</span>\n"
+        XTOOL+="<span>viewers: $(echo $STREAM | jq -r '.data[].viewer_count')</span>\n"
+        XTOOL+="<span>title: $(echo $STREAM | jq -r '.data[].title')</span>\n"
         XTOOL+="<span>----------------------------------------</span>\n"
-
-        # HTML stream infos
-        HTML+="<span>$username</span><br/>"
-        HTML+="<span>game: $gameName</span><br/>"
-        HTML+="<span>viewers: $viewerCount</span><br/>"
-        HTML+="<span>title: $title</span><br/>"
-        HTML+="<a href='https://twitch.tv/$username'>link</a><br/>"
-        HTML+="<span>----------------------------------------</span><br/>"
     else   
         # streamer is no longer online 
         if [ $in -eq 0 ];then
@@ -157,11 +140,5 @@ echo "${XPAN}"
 
 # Echo the tooltip
 echo -e "${XTOOL}"
-
-# HTML div end
-HTML+="</div>"
-
-# write in the html file
-echo -e "${HTML}" > "${DIR}/html/wostrim.html"
 
 exit 0
