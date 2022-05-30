@@ -6,9 +6,6 @@ readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # streamer list
 source "${DIR}/streamer_list.sh"
 
-# some tools to get values in json file
-source "${DIR}/jsonTools.sh"
-
 # tools to do calls on twitch api
 source "${DIR}/apiTools.sh"
 
@@ -52,12 +49,12 @@ do
     if [ -z "${!existing_id}" ]; then
         # get streamer infos from twitch api
         USER=$(getTwitchUser $streamer)
-        
+    
         # if streamer found
-        if [[ "$(echo $USER | jsonValue _total )" != 0 ]]; then 
+        if [[ "$(echo $USER | jq -r '.data[].id' )" != 0 ]]; then 
             # store id and name
-            USER_ID=$(echo $USER | jsonValue _id)
-            USER_NAME=$(echo $USER | jsonValue display_name)
+            USER_ID=$(echo $USER | jq -r '.data[].id')
+            USER_NAME=$(echo $USER | jq -r '.data[].display_name')
             
             # save streamer infos in the database for next execution of script
             # this avoids redoing a call to the twitch api to get streamer infos
@@ -89,7 +86,7 @@ do
     done
         
     # if stream is online
-    if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then 
+    if [[ "$(echo $STREAM | jq -r '.data[].type')" == "live" ]]; then 
         # increments the number of online streamers
         STREAM_COUNT=$((STREAM_COUNT + 1))
         
@@ -99,14 +96,14 @@ do
             online_streamers+=($streamer)
             
             # send notification
-            show_nofitication $streamer "$(echo $STREAM | jsonValue game 1)" &
+            show_nofitication $streamer "$(echo $STREAM | jq -r '.data[].game')" &
         fi
-        
+
         # Genmon tooltip XML stream infos
-        XTOOL+="<span fgcolor='${MAGENTA}'>${USER_NAME^}</span>\n"
-        XTOOL+="<span>game: $(echo $STREAM | jsonValue game 1)</span>\n"
-        XTOOL+="<span>viewers: $(echo $STREAM | jsonValue viewers)</span>\n"
-        XTOOL+="<span>title: $(echo $STREAM | jsonValue status)</span>\n"
+        XTOOL+="<span fgcolor='${MAGENTA}'>${USER_NAME^} </span>\n"
+        XTOOL+="<span>game: $(echo $STREAM | jq -r '.data[].game_name')</span>\n"
+        XTOOL+="<span>viewers: $(echo $STREAM | jq -r '.data[].viewer_count')</span>\n"
+        XTOOL+="<span>title: $(echo $STREAM | jq -r '.data[].title')</span>\n"
         XTOOL+="<span>----------------------------------------</span>\n"
     else   
         # streamer is no longer online 

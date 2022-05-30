@@ -6,9 +6,6 @@ readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # streamer list
 source "${DIR}/streamer_list.sh"
 
-# some tools to get values in json file
-source "${DIR}/jsonTools.sh"
-
 # tools to do calls on twitch api
 source "${DIR}/apiTools.sh"
 
@@ -65,11 +62,10 @@ do
         USER=$(getTwitchUser $streamer)
 
         # if streamer is found
-        if [[ "$(echo $USER | jsonValue _total )" != 0 ]]; then
+        if [[ "$(echo $USER | jq -r '.data[].id'  )" != 0 ]]; then
             # get his user id
-            USER_ID=$(echo $USER | jsonValue _id)
-            USER_NAME=$(echo $USER | jsonValue display_name)
-            
+            USER_ID=$(echo $USER | jq -r '.data[].id' )
+            USER_NAME=$(echo $USER | jq -r '.data[].display_name' )
             # save streamer infos in the database for next execution of script
             # this avoids redoing a call to the twitch api to get streamer infos
             array_name=data_${streamer}
@@ -89,15 +85,15 @@ do
     STREAM=$(getTwitchStream $USER_ID)
     
     # if streamer is on live
-    if [[ "$(echo $STREAM | jsonValue stream_type)" == "live" ]]; then
+    if [[ "$(echo $STREAM | jq -r '.data[].type')" == "live" ]]; then
         NB_STREAM_LIVE=$(($NB_STREAM_LIVE + 1))
         LAST_ONLINE_STREAMER=$streamer
 
         # display stream infos
-        echo "game: "$(echo $STREAM | jsonValue game 1)
-        echo "viewers: "$(echo $STREAM | jsonValue viewers)
-        echo "title:" $(echo $STREAM | jsonValue status)
-        echo $(echo $STREAM | getJsonValue url)
+        echo "game: "$(echo $STREAM | jq -r '.data[].game_name' )
+        echo "viewers: "$(echo $STREAM | jq -r '.data[].viewer_count' )
+        echo "title:" $(echo $STREAM | jq -r '.data[].title' )
+        echo "https://twitch.tv/"$(echo $STREAM | jq -r '.data[].user_login' )
     else
         echo "No stream"
     fi

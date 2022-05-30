@@ -1,6 +1,9 @@
 # Wostrim
 bash script to see if your twitch streamer is online and get some infos like game name, number of viewers, stream url...
 
+## Dependancies
+You need to install `jq` for json parsing
+
 ## Run
 ```
 ./wostrim.sh zerator laink
@@ -78,8 +81,14 @@ If you click on the button, it will open the stream on mpv if it's installed, or
 #### If you don't have zenity
 It will display a notification with notify-send like this
 
+## HTML
+I created a wostrim script that render the same content of wostrim in a html page.
+
+Execute `wostrim-html.sh` and it create a `wostrim.html` page in the `html/` folder.
+
+So you can access via your webserver this html page to see your online streamers.
+
+I recommended to create a cronjob to run this script every 5 minutes and symlink (`ln -s`) this file on your web server.
+
 ## Why I did this ?
 I didn't want to have a twitch account, but to be able to know which of my streamers on twitch was on live
-
-# Todo
-- make it works with twitch api token
