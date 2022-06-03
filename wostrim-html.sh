@@ -12,8 +12,17 @@ source "${DIR}/apiTools.sh"
 # database file containing the names and id of streams previously retrieved
 source "${DIR}/database.sh"
 
-# HTML div start
-HTML="<div>"
+# HTML start
+HTML="<!DOCTYPE html>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel='stylesheet' href='css/style.css'>
+</head>
+<body>
+    <h1>Wostrim</h1>
+    <div id='content'>   
+"
 
 # default streamer list from config.sh
 STREAMER_LIST=("${LIST[@]}")
@@ -62,18 +71,23 @@ do
         
     # if stream is online
     if [[ "$(echo $STREAM | jq -r '.data[].type')" == "live" ]]; then 
+        user_login=$(echo $STREAM | jq -r '.data[].user_login')
+
         # HTML stream infos
-        HTML+="<span>${USER_NAME^} </span><br/>"
-        HTML+="<span>game: $(echo $STREAM | jq -r '.data[].game_name')</span><br/>"
-        HTML+="<span>viewers: $(echo $STREAM | jq -r '.data[].viewer_count')</span><br/>"
-        HTML+="<span>title: $(echo $STREAM | jq -r '.data[].title')</span><br/>"
-        HTML+="<a href='https://twitch.tv/$username'>link</a><br/>"
-        HTML+="<span>----------------------------------------</span><br/>"
+        HTML+="<div class='stream'>"
+        HTML+="<a href='https://twitch.tv/$user_login'>"
+        HTML+="<img class='thumbnail' src='https://static-cdn.jtvnw.net/previews-ttv/live_user_$user_login-328x204.jpg'/>"
+        HTML+="<span class='username'>${USER_NAME^} </span><br/>"
+        HTML+="<span class='game'>🕹️ $(echo $STREAM | jq -r '.data[].game_name')</span><br/>"
+        HTML+="<span class='viewers'>👨‍💻️ $(echo $STREAM | jq -r '.data[].viewer_count')</span><br/>"
+        HTML+="<span class='title'>$(echo $STREAM | jq -r '.data[].title')</span><br/>"
+        HTML+="</a>"
+        HTML+="</div>"
     fi
 done
 
-# HTML div end
-HTML+="</div>"
+# HTML end
+HTML+="</div></body>"
 
 # write in the html file
 echo -e "${HTML}" > "${DIR}/html/wostrim.html"
