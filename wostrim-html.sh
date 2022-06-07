@@ -17,7 +17,7 @@ HTML="<!DOCTYPE html>
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <link rel='stylesheet' href='css/style.css'>
+    <link rel='stylesheet' href='css/wostrim.css'>
 </head>
 <body>
     <h1>Wostrim</h1>
@@ -76,11 +76,13 @@ do
         # HTML stream infos
         HTML+="<div class='stream'>"
         HTML+="<a href='https://twitch.tv/$user_login'>"
-        HTML+="<img class='thumbnail' src='https://static-cdn.jtvnw.net/previews-ttv/live_user_$user_login-328x204.jpg'/>"
+        HTML+="<img class='thumbnail' src='https://static-cdn.jtvnw.net/previews-ttv/live_user_$user_login-328x185.jpg'/>"
+        HTML+="<div class='stream-infos'>"
         HTML+="<span class='username'>${USER_NAME^} </span><br/>"
         HTML+="<span class='game'>🕹️ $(echo $STREAM | jq -r '.data[].game_name')</span><br/>"
         HTML+="<span class='viewers'>👨‍💻️ $(echo $STREAM | jq -r '.data[].viewer_count')</span><br/>"
         HTML+="<span class='title'>$(echo $STREAM | jq -r '.data[].title')</span><br/>"
+        HTML+="</div>"
         HTML+="</a>"
         HTML+="</div>"
     fi
