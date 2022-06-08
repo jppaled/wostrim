@@ -32,5 +32,5 @@
 # )
 ACCEPT_VERSION='application/vnd.twitchtv.v5+json'
 # take my client if and token
-CLIENT_ID='2w3oz9kvkfo5grk8mpmi1rotxze714'
-TOKEN='1l69p6r4pafddggutqh9j1hlon9w4r'
+CLIENT_ID='7sd00f8r0musv7el250kuupntiyu0s'
+TOKEN='3itttz2a6u9ccb18eantbikyss8gvz'
